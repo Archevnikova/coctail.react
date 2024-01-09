@@ -9,12 +9,16 @@ function One(){
 
     useEffect(() => {
         const apiUrl = 'http://www.thecocktaildb.com/api/json/v1/1/random.php';
-        axios.get(apiUrl).then((resp) => {
-            console.log(resp.date);
-          const allPersons = resp.data["drinks"][0];
-          setCoctail(allPersons);
+        const letter ="i";
+        fetch(apiUrl)
+        .then(resp => resp.json())
+        .then(json => setCoctail(json["drinks"][0]));
+        // axios.get(apiUrl).then((resp) => {
+        //     console.log(resp.date);
+        //   const allPersons = resp.data["drinks"][0];
+        //   setCoctail(allPersons);
 
-        });
+        // });
       }, []);
     
     return (

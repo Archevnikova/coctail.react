@@ -1,12 +1,15 @@
 import Accordeon from "./Accordeon";
 import Navigation from "./Navigation";
 import Carousel from "./Carousel";
+import { addFavoriteAction } from "../redux/action";
 
 
 function Two(){
     return(
         <>
+
         <Navigation/>
+        <button onClick={addFavoriteAction("3")}>Кнопка</button>
         <Accordeon/>
         <Carousel
         img1="https://klike.net/uploads/posts/2022-10/1667109673_3-12.jpg"

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import One from './components/One';
 import Two from './components/Two';
+import Three from './components/Three';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 
@@ -13,6 +14,7 @@ root.render(
       <Routes>
         <Route path="one" element={<One />} />
         <Route path="two" element={<Two />} />
+        <Route path="three" element={<Three/>}/>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
