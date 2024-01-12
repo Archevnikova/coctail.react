@@ -1,33 +1,57 @@
 import Navigation from "./Navigation";
 import Card from './Card';
-import axios from 'axios';
+import axios, {get} from 'axios';
 import {useState, useEffect }from 'react';
 
 
 function One(){
-    const [coctail,setCoctail]=useState();
+    const [coctails,setCoctails]=useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const apiUrl = 'http://www.thecocktaildb.com/api/json/v1/1/random.php';
-        const letter ="i";
-        fetch(apiUrl)
-        .then(resp => resp.json())
-        .then(json => setCoctail(json["drinks"][0]));
-        // axios.get(apiUrl).then((resp) => {
-        //     console.log(resp.date);
-        //   const allPersons = resp.data["drinks"][0];
-        //   setCoctail(allPersons);
+        const getCoctails = (letter) => {
+            fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${letter}`)
+            .then((response) => response.json())
+            .then((data) => {
+                setCoctails(data['drinks']);
+            })
+            .catch((error) => console.log(error.message))
+            .finally(() => setLoading(false));
+        }
 
-        // });
+        const getRandomCoctail = () => {
+            fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php?')
+                .then((response) => response.json())
+                .then((data) => {
+                    setCoctails(data['drinks']);
+                })
+                .catch((error) => console.log(error.message))
+                .finally(() => setLoading(false));
+        }
+
+        // getCoctails('b'); // Коктейли на букву 'b'
+        getRandomCoctail(); // Случайный коктейль
+
       }, []);
-    
+
+    if(loading){
+        return <p>Данные ещё загружаются</p>;
+    }
+
     return (
         <>
         <Navigation/>
-        <Card
-        img = "https://gagaru.club/uploads/posts/2023-06/1685763908_gagaru-club-p-tsvetochnii-kokteil-fon-85.jpg"
-        name ="Голубая логуна"
-        description = {coctail["strInstructions"]} />
+            {coctails.map((coctail) => {
+                return (
+                    <Card
+                        key = {coctail.idDrink}
+                        img = {coctail.strDrinkThumb}
+                        name = {coctail.strDrink}
+                        description = {coctail.strInstructions}
+                    />
+                )
+            })}
+
         </>
     )
 }
