@@ -6,28 +6,31 @@ import { useEffect, useState } from 'react';
 function Three (){
     //const GameOfThrones = "https://anapioficeandfire.com/api/characters/583";
     
-    const[ characters, setCharacters]=useState([]);
+    const [character, setCharacter]=useState(null);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
-        const getData= async()=>{ 
-            let response = await fetch("https://anapioficeandfire.com/api/characters/583")
-            .then ((name )=> name.json() )
-            .then (( data ) => setCharacters (data ))
+        const getData = ()=> {
+            let response = fetch("https://anapioficeandfire.com/api/characters/583")
+            .then ((response )=> response.json())
+            .then (( data ) => setCharacter(data ))
             .catch ((error)=>{
                 console.log(error.message);
-            }) 
+            })
+            .finally(() => setLoading(false));
         }
        
          getData();
-        console.log(characters);
     } ,[] );
+
+    if(loading){
+        return (
+            <p>Ещё загружается</p>
+        );
+    }
+
     return(
         <>
-        {characters.map((ch)=>{
-            return (
-                <><h1>{ch.name}</h1>
-                </>
-            )
-        })}
+        <h1>{character.name}</h1>
         <Navigation/>
         <Card/>
         </>
